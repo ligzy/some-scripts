@@ -1,0 +1,26 @@
+import groovy.json.JsonSlurper
+
+def jsonSlurper = new JsonSlurper()
+
+def username=""
+def password=""
+
+def url = "http://git.sai.corp/rest/api/1.0/projects/AS/repos"
+def get = new URL(url).openConnection();
+get.setRequestProperty("Authorization", "Basic ${"$username:$password".bytes.encodeBase64()}")
+get.setRequestProperty("Content-Type", "application/json")
+
+def getRC = get.getResponseCode();
+def responseText=get.getInputStream().getText();
+
+println(getRC);
+
+if(getRC.equals(200)) {
+
+    println(responseText);
+}
+
+def objectReps = jsonSlurper.parseText(responseText)
+
+println(objectReps.size )
+println(objectReps.values)
